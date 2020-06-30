@@ -1,12 +1,12 @@
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
-import NProgress from 'nprogress' // progress bar
-import 'nprogress/nprogress.css' // progress bar style
+import NProgress from 'nprogress' // progress bar进度条
+import 'nprogress/nprogress.css' // progress bar style进度条样式
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
 
-NProgress.configure({ showSpinner: false }) // NProgress Configuration
+NProgress.configure({ showSpinner: false }) // NProgress Configuration,showSpinner代表右边的小圆环加载圈
 
 const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 
@@ -34,12 +34,12 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+          // 这里的user/getInfo代表的是user模块中的getInfo方法；获取该用户的角色信息，数组格式
           const { roles } = await store.dispatch('user/getInfo')
-
-          // generate accessible routes map based on roles
+          // generate accessible routes map based on roles，生成动态路由，这里的accessedRoutes是过滤后的asyncRoutes
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
 
-          // dynamically add accessible routes
+          // dynamically add accessible routes,动态添加到路由
           router.addRoutes(accessRoutes)
 
           // hack method to ensure that addRoutes is complete
@@ -58,7 +58,7 @@ router.beforeEach(async(to, from, next) => {
     /* has no token*/
 
     if (whiteList.indexOf(to.path) !== -1) {
-      // in the free login whitelist, go directly
+      // in the free login whitelist, go directly  存在
       next()
     } else {
       // other pages that do not have permission to access are redirected to the login page.

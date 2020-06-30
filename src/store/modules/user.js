@@ -47,6 +47,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
+      // 这里的getInfo不是递归，是引入的Api,通过token获取用户信息
       getInfo(state.token).then(response => {
         const { data } = response
 
@@ -65,6 +66,7 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
+        // resolve将data返回，可以被await getInfo()获取
         resolve(data)
       }).catch(error => {
         reject(error)
