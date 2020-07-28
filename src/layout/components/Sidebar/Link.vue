@@ -26,6 +26,7 @@ export default {
     }
   },
   methods: {
+    // 判断当前路由是不是external,如果是https的链接的话，这里将component组件变成一个a标签
     linkProps(to) {
       if (this.isExternal) {
         return {

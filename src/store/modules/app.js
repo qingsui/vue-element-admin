@@ -2,6 +2,8 @@ import Cookies from 'js-cookie'
 
 const state = {
   sidebar: {
+    // !!是将数字转换为Boolean类型，+是将变量转换成数字，整体 !!+变量 是将变量转换成Boolean
+    // 因为存放在cookie的status是字符串类型的1
     opened: Cookies.get('sidebarStatus') ? !!+Cookies.get('sidebarStatus') : true,
     withoutAnimation: false
   },

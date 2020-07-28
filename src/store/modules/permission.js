@@ -39,7 +39,7 @@ export function filterAsyncRoutes(routes, roles) {
 }
 
 const state = {
-  routes: [],
+  routes: [], // constantRoutes和asyncRout中符合权限的路由合并最后生成的路由表
   addRoutes: []
 }
 

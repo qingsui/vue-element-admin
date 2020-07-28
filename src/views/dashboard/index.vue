@@ -22,6 +22,12 @@ export default {
       'roles'
     ])
   },
+  activated() {
+    console.log('activated')
+  },
+  mounted() {
+    console.log('mounted')
+  },
   created() {
     if (!this.roles.includes('admin')) {
       this.currentRole = 'editorDashboard'

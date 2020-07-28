@@ -1,0 +1,17 @@
+// @import "./icon/index";
+
+// 每句结尾一定要加;
+$fontSize:37.5;
+
+@function px2rem($px){
+  @return ($px/$fontSize)+rem
+}
+
+@mixin center(){
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+.container{
+  padding:15px;
+}

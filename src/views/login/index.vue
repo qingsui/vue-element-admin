@@ -62,22 +62,21 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
 
 export default {
   name: 'Login',
   components: { },
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
+      if (!value || value.length === 0) {
         callback(new Error('请输入正确的用户名'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密码不能少于6个字符'))
+      if (value.length < 4) {
+        callback(new Error('密码不能少于4个字符'))
       } else {
         callback()
       }
@@ -88,7 +87,7 @@ export default {
         password: '111111'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        username: [{ required: true, trigger: 'change', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
@@ -103,6 +102,7 @@ export default {
     $route: {
       handler: function(route) {
         const query = route.query
+        console.log(route.query)
         if (query) {
           this.redirect = query.redirect
           this.otherQuery = this.getOtherQuery(query)
@@ -119,10 +119,24 @@ export default {
     }
   },
   methods: {
-    checkCapslock(e) {
-      const { key } = e
-      this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
+    checkCapslock({ shiftKey, key } = {}) {
+      if (key && key.length === 1) {
+        if ((shiftKey && key >= 'A' && key <= 'Z') || (!shiftKey && key >= 'A' && key <= 'Z')) {
+          this.capsTooltip = true
+        } else {
+          this.capsTooltip = false
+        }
+      } else {
+        this.capsTooltip = false
+      }
+      if (key === 'CapsLock' && this.capsTooltip === true) {
+        this.capsTooltip = false
+      }
     },
+    // checkCapslock(e) {
+    //   const { key } = e
+    //   this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
+    // },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -139,6 +153,7 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
+              console.log(this.redirect)
               this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
               this.loading = false
             })
@@ -153,6 +168,8 @@ export default {
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {
+        console.log(acc)
+        console.warn(cur)
         if (cur !== 'redirect') {
           acc[cur] = query[cur]
         }

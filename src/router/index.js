@@ -70,14 +70,33 @@ export const asyncRoutes = [
     },
     children: [
       {
-        path: '/book/create',
+        path: 'create',
         component: () => import('@/views/book/create'),
         meta: { title: '上传图书', icon: 'edit', roles: ['admin'] }
       },
       {
-        path: '/book/list',
-        component: () => import('@/views/book/create'),
-        meta: { title: '图书列表', icon: 'edit', roles: ['editor'] }
+        path: 'component',
+        name: 'Component',
+        meta: { title: 'component内置标签', icon: 'bug' },
+        component: () => import('@/views/book/component.vue')
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/error-page/401'),
+        meta: { title: '图书列表', icon: 'edit', roles: ['editor'] },
+        children: [
+          {
+            // 这里可以设置跳转到外部链接,这里菜单为a标签
+            path: 'http://www.baidu.com',
+            meta: { title: '百度一下', icon: 'edit', roles: ['admin'] }
+          },
+          {
+            // path为路由时，这里的菜单是router-link
+            path: 'create',
+            component: () => import('@/views/book/create'),
+            meta: { title: '上传图书', icon: 'edit', roles: ['admin'] }
+          }
+        ]
       }
     ]
   }, {
